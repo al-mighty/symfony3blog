@@ -1,5 +1,5 @@
 #app:
 #    resource: '@AppBundle/Controller/'
 #    type: annotation
-
-
+page:
+    resource: '@PageBundle/Resources/config/routing.yml'

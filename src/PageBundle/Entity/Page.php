@@ -1,41 +1,38 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: progi
- * Date: 23.01.2018
- * Time: 23:49
- */
 
 namespace PageBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class Page
  * @package PageBundle\Entity
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="PageBundle\Repository\PageRepository")
  * @ORM\Table(name="page")
  */
-class Page
-{
+class Page {
+
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
+
     /**
      * @ORM\Column(type="string", length=255)
      */
     private $title;
+
     /**
      * @ORM\Column(type="text")
      */
     private $body;
+
     /**
-     * @ORM\ManyToMany(targetEntity="TermBundle\Entity\Term", inversedBy="pages")
+     * @ORM\ManyToOne(targetEntity="\TermBundle\Entity\Term", inversedBy="pages")
      * @ORM\JoinColumn(name="term_id", referencedColumnName="id")
-     * @ORM\Column(type="text")
      */
     private $category;
 
@@ -44,15 +41,16 @@ class Page
      */
     private $created;
 
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->category = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->created = new \DateTime();
-    }
+//    /**
+//     * @ORM\OneToMany(targetEntity="\CommentBundle\Entity\Comment", mappedBy="page", cascade={"persist", "remove"})
+//     * @ORM\OrderBy({"id" = "DESC"})
+//     */
+//    private $comments;
 
+    public function __construct() {
+        $this->created = new \DateTime();
+        $this->comments = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -137,33 +135,23 @@ class Page
     }
 
     /**
-     * Add category
+     * Set category
      *
      * @param \TermBundle\Entity\Term $category
      *
      * @return Page
      */
-    public function addCategory(\TermBundle\Entity\Term $category)
+    public function setCategory(\TermBundle\Entity\Term $category = null)
     {
-        $this->category[] = $category;
+        $this->category = $category;
 
         return $this;
     }
 
     /**
-     * Remove category
-     *
-     * @param \TermBundle\Entity\Term $category
-     */
-    public function removeCategory(\TermBundle\Entity\Term $category)
-    {
-        $this->category->removeElement($category);
-    }
-
-    /**
      * Get category
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return \TermBundle\Entity\Term
      */
     public function getCategory()
     {
@@ -171,16 +159,38 @@ class Page
     }
 
     /**
-     * Set category
+     * Add comment
      *
-     * @param string $category
+     * @param \CommentBundle\Entity\Comment $comment
      *
      * @return Page
      */
-    public function setCategory($category)
+    public function addComment(\CommentBundle\Entity\Comment $comment)
     {
-        $this->category = $category;
-
+        $this->comments[] = $comment;
         return $this;
+    }
+
+    /**
+     * Remove comment
+     *
+     * @param \CommentBundle\Entity\Comment $comment
+     */
+    public function removeComment(\CommentBundle\Entity\Comment $comment)
+    {
+        $this->comments->removeElement($comment);
+    }
+
+    /**
+     * Get comments
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getComments()
+    {
+        return $this->comments;
+    }
+    public function setId(){
+        //
     }
 }

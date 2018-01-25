@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: progi
- * Date: 23.01.2018
- * Time: 23:49
- */
 
 namespace TermBundle\Entity;
 
@@ -12,49 +6,41 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Class Term
- * @package TermBundle\Entity
- * @ORM\Entity()
+ * Class Page
+ * @package PageBundle\Entity
+ * @ORM\Entity
  * @ORM\Table(name="term")
  */
-class Term
-{
+class Term {
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
+
     /**
      * @ORM\Column(type="string", length=255)
      */
     private $name;
+
     /**
      * @ORM\Column(type="text")
      */
     private $description;
-//    /**
-//     * @ORM\Column(type="text")
-//     */
-//    private $category;
+
     /**
      * @ORM\Column(type="datetime")
      */
     private $created;
 
+
     /**
-     * @ORM\OneToMany(targetEntity="PageBundle\Entity\Page", mappedBy="category")
+     * @ORM\OneToMany(targetEntity="\PageBundle\Entity\Page", mappedBy="category")
      */
     private $pages;
-    
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->pages = new ArrayCollection();
-        $this->created = new \DateTime();
-    }
+
+
 
     /**
      * Get id
@@ -115,27 +101,35 @@ class Term
     }
 
     /**
-     * Set category
+     * Set created
      *
-     * @param string $category
+     * @param \DateTime $created
      *
      * @return Term
      */
-    public function setCategory($category)
+    public function setCreated($created)
     {
-        $this->category = $category;
+        $this->created = $created;
 
         return $this;
     }
 
     /**
-     * Get category
+     * Get created
      *
-     * @return string
+     * @return \DateTime
      */
-    public function getCategory()
+    public function getCreated()
     {
-        return $this->category;
+        return $this->created;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->pages = new ArrayCollection();
+        $this->created = new \DateTime();
     }
 
     /**
@@ -169,30 +163,9 @@ class Term
      */
     public function getPages()
     {
-        return $this->pages;
+        return $this->pages;//$this->pages->toArray();
     }
-
-    /**
-     * Set created
-     *
-     * @param \DateTime $created
-     *
-     * @return Term
-     */
-    public function setCreated($created)
-    {
-        $this->created = $created;
-
-        return $this;
-    }
-
-    /**
-     * Get created
-     *
-     * @return \DateTime
-     */
-    public function getCreated()
-    {
-        return $this->created;
+    public function __toString() {
+        return $this->name;
     }
 }
